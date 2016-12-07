@@ -8,6 +8,7 @@ agent = ::File.join(directory, 'buildkite-agent.exe')
 windows_zipfile directory do
   source url
   checksum node['buildkite']['checksum'] if node['buildkite']['checksum']
+  overwrite true
 
   notifies :restart, 'winsw[buildkite-agent]'
 
