@@ -24,7 +24,7 @@ describe 'buildkite::conf' do
     expect(chef_run)
       .to render_file('/cache/buildkite-agent.cfg')
       .with_content { |content|
-        expect(content.split('\n')).to match_array([
+        expect(content.split($/)).to match_array([
           'token="secret"',
           'name="fred"',
           'debug=true'

@@ -9,6 +9,6 @@ file node['buildkite']['conf_path'] do
       wrapper = '"'
     end
 
-    acc + key + '=' + wrapper + value + wrapper + '\n'
+    acc + key + '=' + wrapper + value + wrapper + $/
   end
 end
