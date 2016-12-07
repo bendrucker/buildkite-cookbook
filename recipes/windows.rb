@@ -16,5 +16,5 @@ end
 
 winsw 'buildkite-agent' do
   executable agent
-  args ['start']
+  args ['start', '--config', node['buildkite']['conf_path']]
 end

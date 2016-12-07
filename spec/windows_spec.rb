@@ -40,7 +40,7 @@ describe 'buildkite::windows' do
         .to install_winsw('buildkite-agent')
         .with({
           executable: '/cache/buildkite/buildkite-agent.exe',
-          args: ['start']
+          args: ['start', '--config', '/cache/buildkite-agent.cfg']
         })
     end
   end
