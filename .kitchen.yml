@@ -1,0 +1,16 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[buildkite::default]
+    data_bags_path: <%= ENV['EAZE_CHEF_REPO_PATH'] %>/data_bags_solo/
+    encrypted_data_bag_secret_key_path: <%= ENV['EAZE_CHEF_REPO_PATH'] %>/data_bags_solo/encrypted_data_bag_secret
