@@ -28,7 +28,9 @@ describe 'buildkite::conf' do
           'bootstrap-script="buildkite bootstrap"',
           'token="secret"',
           'name="fred"',
-          'debug=true'
+          'debug=true',
+          'build-path="builds"',
+          'name="%hostname-%n"'
         ])
       }
   end
