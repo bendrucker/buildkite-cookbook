@@ -3,7 +3,7 @@ file node['buildkite']['conf_path'] do
 
   content ({
     'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]],
-    'bootstrap-script' => "#{Chef::Config[:file_cache_path]}\\buildkite-agent\\buildkite.exe bootstrap"
+    'bootstrap-script' => ::File.join(Chef::Config[:file_cache_path].gsub('\\', '/'), 'buildkite', 'buildkite-agent.exe') + ' bootstrap'
   })
   .merge(node['buildkite']['conf']).reduce('') do |acc, (key, value)|
     wrapper = ''
@@ -15,4 +15,6 @@ file node['buildkite']['conf_path'] do
 
     acc + key + '=' + wrapper + value + wrapper + $/
   end
+
+  notifies :restart, 'winsw[buildkite-agent]' if platform?('windows')
 end
