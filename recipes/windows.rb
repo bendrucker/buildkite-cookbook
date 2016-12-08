@@ -8,7 +8,11 @@ agent = directory + '\\buildkite-agent.exe'
 winsw 'buildkite-agent' do
   executable agent
   args ['start', '--config', node['buildkite']['conf_path']]
-  action :nothing
+
+  options ({
+    workingdirectory: directory,
+    stopparentprocessfirst: true
+  })
 end
 
 windows_zipfile directory do
