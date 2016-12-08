@@ -25,6 +25,7 @@ describe 'buildkite::conf' do
       .to render_file('/cache/buildkite-agent.cfg')
       .with_content { |content|
         expect(content.split($/)).to match_array([
+          'bootstrap-script="buildkite bootstrap"',
           'token="secret"',
           'name="fred"',
           'debug=true'
