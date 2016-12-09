@@ -1,38 +1,36 @@
 require_relative './spec_helper'
 
-describe 'buildkite::conf' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new({
-      file_cache_path: '/cache',
-      platform: 'ubuntu',
-      version: '16.04'
-    }) do |node|
-      node.normal['buildkite']['conf'] = {
-        'name' => 'fred',
-        'debug' => true
-      }
-    end.converge described_recipe
-  end
+describe Buildkite::Conf do
+  let(:conf) { 
+    Class.new {
+      include Buildkite::Conf
+    }
+  }
 
-  before do
-    allow(Chef::EncryptedDataBagItem).to receive(:load).with('credentials', 'buildkite').and_return({
-      'token' => 'secret'
-    })
-  end
+  describe 'render_conf' do
+    it 'renders defaults' do
+      expect(conf.new.render_conf({'foo' => 'bar'})).to eq("foo=\"bar\"\n")
+    end
 
-  it 'creates the conf file' do
-    expect(chef_run)
-      .to render_file('/cache/buildkite-agent.cfg')
-      .with_content { |content|
-        expect(content.split($/)).to match_array([
-          'bootstrap-script="buildkite bootstrap"',
-          'token="secret"',
-          'name="fred"',
-          'debug=true',
-          'build-path="builds"',
-          'name="%hostname-%n"'
-        ])
-      }
+    it 'renders overrides' do
+      expect(conf.new.render_conf({'foo' => 'bar'}, {'foo' => 'baz'})).to eq("foo=\"baz\"\n")
+    end
+
+    it 'adds a newline between values' do
+      expect(conf.new.render_conf({'foo' => 'bar'}, {'bar' => 'baz'})).to eq("foo=\"bar\"\nbar=\"baz\"\n")
+    end
+
+    it 'handles meta-data strings' do
+      expect(conf.new.render_conf({'meta-data' => 'foo=bar'})).to eq("meta-data=\"foo=bar\"\n")
+    end
+
+    it 'handles meta-data objects' do
+      expect(conf.new.render_conf({'meta-data' => {'foo' => 'bar'}})).to eq("meta-data=\"foo=bar\"\n")
+    end
+
+    it 'handles multi-key meta-data objects' do
+      expect(conf.new.render_conf({'meta-data' => {'foo' => 'bar', 'bar' => 'baz'}}))
+        .to eq("meta-data=\"foo=bar,bar=baz\"\n")
+    end
   end
-  
 end
