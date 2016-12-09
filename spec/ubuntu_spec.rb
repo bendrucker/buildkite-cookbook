@@ -10,6 +10,13 @@ describe 'buildkite::ubuntu' do
     .converge described_recipe
   end
 
+  before do
+    allow(Chef::EncryptedDataBagItem)
+      .to receive(:load)
+      .with('credentials', 'buildkite')
+      .and_return({'token' => 'toto'})
+  end
+
   it 'adds the apt source' do
     expect(chef_run)
       .to render_file('/etc/apt/sources.list.d/buildkite-agent.list')
@@ -34,6 +41,30 @@ describe 'buildkite::ubuntu' do
   it 'installs the buildkite agent' do
     expect(chef_run)
       .to install_apt_package('buildkite-agent')
-      .with(version: '2.3.2')
+      .with(version: '2.3.2-1408')
+  end
+
+  it 'creates the conf' do
+    expect(chef_run)
+      .to render_file('/etc/buildkite-agent/buildkite-agent.cfg')
+      .with_content <<-EOH.strip
+name="%hostname-%n"
+build-path="/etc/buildkite-agent/buildkite-agent.cfg"
+bootstrap-script="/usr/share/buildkite-agent/bootstrap.sh"
+meta-data="os=ubuntu"
+token="toto"
+      EOH
+  end
+
+  it 'notifies the service to restart when conf updates' do
+    expect(chef_run.file('/etc/buildkite-agent/buildkite-agent.cfg'))
+      .to notify('service[buildkite-agent]')
+      .to(:restart)
+      .delayed
+  end
+
+  it 'enables and starts the buildkite service' do
+    expect(chef_run).to enable_service('buildkite-agent')
+    expect(chef_run).to start_service('buildkite-agent')
   end
 end
