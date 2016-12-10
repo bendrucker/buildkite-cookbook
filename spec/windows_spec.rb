@@ -27,6 +27,10 @@ describe 'buildkite::windows' do
       chef_run.converge described_recipe
     end
 
+    it 'converts the bootstrap script path from windows => linux' do
+      expect(chef_run.node['buildkite']['conf']['bootstrap-script']).to eq('C:/cache/buildkite/buildkite-agent.exe bootstrap')
+    end
+
     it 'installs buildkite from github releases' do
       expect(chef_run)
         .to unzip_windows_zipfile_to('C:\cache\buildkite')
