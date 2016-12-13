@@ -1,6 +1,7 @@
 resource_name :buildkite_key
 
 actions :create, :delete
+default_action :create
 
 property :path, String, default: ::File.join(node['buildkite']['ssh_path'], 'id_rsa')
 property :owner, String, default: node['buildkite']['user']
