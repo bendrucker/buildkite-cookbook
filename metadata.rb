@@ -1,6 +1,12 @@
 name 'buildkite'
 version '0.2.0'
 
+maintainer 'Ben Drucker'
+maintainer_email 'bvdrucker@gmail.com'
+
+issues_url 'https://github.com/bendrucker/buildkite-cookbook/issues'
+source_url 'https://github.com/bendrucker/buildkite-cookbook'
+
 supports 'ubuntu'
 supports 'windows'
 
