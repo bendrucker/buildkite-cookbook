@@ -1,0 +1,13 @@
+sudo: false
+language: ruby
+addons:
+  apt:
+    sources:
+      - chef-stable-precise
+    packages:
+      - chefdk
+install: echo "skip bundle install"
+script:
+- cookstyle
+- foodcritic .
+- rspec
