@@ -6,9 +6,14 @@ addons:
       - chef-stable-precise
     packages:
       - chefdk
+cache:
+- apt
 install: echo "skip bundle install"
 before_script:
 - eval "$(/opt/chefdk/bin/chef shell-init bash)"
+- echo "StrictHostKeyChecking no" > ~/.ssh/config
+- git config --global user.email "ci@berkshelf.com"
+- git config --global user.name "Berkshelf"
 script:
 - cookstyle
 - foodcritic .
