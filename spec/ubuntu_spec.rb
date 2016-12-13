@@ -2,19 +2,20 @@ require_relative './spec_helper'
 
 describe 'buildkite::ubuntu' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new({
-      file_cache_path: '/cache',
-      platform: 'ubuntu',
-      version: '16.04'
-    })
-    .converge described_recipe
+    ChefSpec::SoloRunner
+      .new(
+        file_cache_path: '/cache',
+        platform: 'ubuntu',
+        version: '16.04'
+      )
+      .converge described_recipe
   end
 
   before do
     allow(Chef::EncryptedDataBagItem)
       .to receive(:load)
       .with('credentials', 'buildkite')
-      .and_return({'token' => 'toto'})
+      .and_return('token' => 'toto')
   end
 
   it 'adds the apt source' do
@@ -26,12 +27,12 @@ describe 'buildkite::ubuntu' do
   it 'adds the apt repository' do
     expect(chef_run)
       .to add_apt_repository('buildkite')
-      .with({
+      .with(
         uri: 'https://apt.buildkite.com/buildkite-agent',
         distribution: 'xenial',
-        components: ['stable', 'main'],
+        components: %w(stable main),
         key: '32A37959C2FA5C3C99EFBC32A79206696452D198'
-      })
+      )
   end
 
   it 'runs apt update' do
@@ -49,7 +50,7 @@ describe 'buildkite::ubuntu' do
       .to render_file('/etc/buildkite-agent/buildkite-agent.cfg')
       .with_content <<-EOH.strip
 name="%hostname-%n"
-build-path="/etc/buildkite-agent/buildkite-agent.cfg"
+build-path="/var/lib/buildkite-agent/builds/"
 bootstrap-script="/usr/share/buildkite-agent/bootstrap.sh"
 meta-data="os=ubuntu"
 token="toto"

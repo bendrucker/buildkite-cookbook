@@ -20,9 +20,7 @@ end
 file node['buildkite']['conf_path'] do
   token_path = node['buildkite']['token']
 
-  content render_conf(node['buildkite']['conf'], {
-    'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]]
-  })
+  content render_conf(node['buildkite']['conf'], 'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]])
 
   notifies :restart, 'service[buildkite-agent]'
 end

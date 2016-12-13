@@ -12,21 +12,19 @@ Chef::Resource::File.send(:include, Buildkite::Conf)
 file node['buildkite']['conf_path'] do
   token_path = node['buildkite']['token']
 
-  content render_conf(node['buildkite']['conf'], {
-    'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]]
-  })
+  content render_conf(node['buildkite']['conf'], 'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]])
 
   notifies :restart, 'winsw[buildkite-agent]' if platform?('windows')
 end
 
 winsw 'buildkite-agent' do
   executable agent
-  args ['start', '--config', node['buildkite']['conf_path'].gsub('\\', '/')]
+  args ['start', '--config', node['buildkite']['conf_path'].tr('\\', '/')]
 
-  options ({
+  options(
     workingdirectory: directory,
     stopparentprocessfirst: true
-  })
+  )
 end
 
 windows_zipfile directory do
@@ -37,5 +35,5 @@ windows_zipfile directory do
   notifies :stop, 'winsw[buildkite-agent]', :before
   notifies :install, 'winsw[buildkite-agent]'
 
-  not_if "#{agent} --version | find /i \"#{version}\"" 
+  not_if "#{agent} --version | find /i \"#{version}\""
 end

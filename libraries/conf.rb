@@ -10,11 +10,11 @@ module Buildkite
           wrapper = '"'
         end
 
-        if key == 'meta-data' && value.kind_of?(Hash)
-          value = value.map { |key, value| [key, value].join('=') }.join(',')
+        if key == 'meta-data' && value.is_a?(Hash)
+          value = value.map { |meta_key, meta_value| [meta_key, meta_value].join('=') }.join(',')
         end
 
-        acc + key + '=' + wrapper + value + wrapper + $/
+        acc + key + '=' + wrapper + value + wrapper + $INPUT_RECORD_SEPARATOR
       end
     end
   end
