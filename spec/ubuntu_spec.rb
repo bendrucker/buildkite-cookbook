@@ -7,8 +7,9 @@ describe 'buildkite::ubuntu' do
         file_cache_path: '/cache',
         platform: 'ubuntu',
         version: '16.04'
-      )
-      .converge described_recipe
+      ) do |node|
+        node.normal['buildkite']['conf']['meta-data']['foo'] = true
+      end.converge described_recipe
   end
 
   before do
@@ -52,7 +53,7 @@ describe 'buildkite::ubuntu' do
 name="%hostname-%n"
 build-path="/var/lib/buildkite-agent/builds/"
 bootstrap-script="/usr/share/buildkite-agent/bootstrap.sh"
-meta-data="os=ubuntu"
+meta-data="os=ubuntu,foo=true"
 token="toto"
       EOH
   end
