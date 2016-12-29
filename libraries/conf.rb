@@ -1,6 +1,9 @@
 module Buildkite
   module Conf
     def render_conf(defaults, overrides = {})
+      Chef::Log.debug('defaults: ' + Chef::JSONCompat.to_json_pretty(defaults))
+      Chef::Log.debug('overrides: ' + Chef::JSONCompat.to_json_pretty(overrides))
+
       wrapper = ''
       defaults.to_hash.merge(overrides).reduce('') do |acc, (key, value)|
         wrapper = ''
