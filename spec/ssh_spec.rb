@@ -12,6 +12,16 @@ describe 'buildkite::ssh' do
       .converge 'ubuntu-test::ssh'
   end
 
+  it 'creates the enclosing directory' do
+    expect(chef_run)
+      .to create_directory('/var/lib/buildkite-agent/.ssh')
+      .with(
+        recursive: true,
+        user: 'buildkite-agent',
+        group: 'buildkite-agent'
+      )
+  end
+
   it 'installs the ssh key' do
     expect(chef_run)
       .to create_file('/var/lib/buildkite-agent/.ssh/id_rsa')

@@ -8,6 +8,12 @@ property :owner, String, default: node['buildkite']['user']
 property :content, String, regex: /BEGIN RSA PRIVATE KEY/, required: true
 
 action :create do
+  directory ::File.dirname(new_resource.path) do
+    recursive true
+    owner new_resource.owner
+    group new_resource.owner
+  end
+
   file new_resource.path do
     content new_resource.content
     mode '0400'
@@ -17,6 +23,10 @@ action :create do
 end
 
 action :delete do
+  directory ::File.dirname(new_resource.path) do
+    action :delete
+  end
+
   file new_resource.path do
     action :delete
   end
