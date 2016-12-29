@@ -1,5 +1,5 @@
 name 'buildkite'
-version '0.2.6'
+version '0.2.7'
 
 maintainer 'Ben Drucker'
 maintainer_email 'bvdrucker@gmail.com'
