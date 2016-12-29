@@ -17,7 +17,7 @@ module Buildkite
           value = value.map { |meta_key, meta_value| [meta_key, meta_value].join('=') }.join(',')
         end
 
-        acc + key + '=' + wrapper + value + wrapper + ($INPUT_RECORD_SEPARATOR || '\\n')
+        acc + key + '=' + wrapper + value + wrapper + ($INPUT_RECORD_SEPARATOR || "\n")
       end
     end
   end
