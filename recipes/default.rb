@@ -1,7 +1,7 @@
 include_recipe 'git'
 
 log 'conf' do
-  level 'debug'
+  level :debug
   message Chef::JSONCompat.to_json_pretty(node['buildkite'])
 end
 
