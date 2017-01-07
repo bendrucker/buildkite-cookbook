@@ -4,6 +4,8 @@ version '1.0.0'
 maintainer 'Ben Drucker'
 maintainer_email 'bvdrucker@gmail.com'
 
+license 'MIT'
+
 issues_url 'https://github.com/bendrucker/buildkite-cookbook/issues'
 source_url 'https://github.com/bendrucker/buildkite-cookbook'
 
