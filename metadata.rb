@@ -1,6 +1,8 @@
 name 'buildkite'
 version '1.0.0'
 
+description 'Installs and configures the buildkite agent'
+
 maintainer 'Ben Drucker'
 maintainer_email 'bvdrucker@gmail.com'
 
