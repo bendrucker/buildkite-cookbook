@@ -1,8 +1,8 @@
 include_recipe 'git'
 
 log 'conf' do
-  level :info
-  message 'conf: ' + Chef::JSONCompat.to_json_pretty(node['buildkite'])
+  level :debug
+  message 'buildkite: ' + Chef::JSONCompat.to_json(node['buildkite'])
 end
 
 include_recipe 'buildkite::windows' if platform?('windows')
