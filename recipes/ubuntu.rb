@@ -17,7 +17,7 @@ apt_package 'buildkite-agent' do
   version node['buildkite']['version']
 end
 
-file node['buildkite']['conf_path'] do
+file node['buildkite']['paths']['conf'] do
   token_path = node['buildkite']['token']
 
   content render_conf(node['buildkite']['conf'], 'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]])
@@ -27,4 +27,12 @@ end
 
 service 'buildkite-agent' do
   action [:enable, :start]
+end
+
+%w(ssh hooks).each do |key|
+  directory node['buildkite']['paths'][key] do
+    recursive true
+    owner node['buildkite']['user']
+    group node['buildkite']['user']
+  end
 end

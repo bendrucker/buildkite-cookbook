@@ -1,25 +1,25 @@
 require_relative './spec_helper'
 
-describe 'buildkite::ssh' do
+describe 'buildkite::hook' do
   let(:chef_run) do
     ChefSpec::SoloRunner
       .new(
         file_cache_path: '/cache',
         platform: 'ubuntu',
         version: '16.04',
-        step_into: ['buildkite_key']
+        step_into: ['buildkite_hook']
       )
-      .converge 'ubuntu-test::ssh'
+      .converge 'ubuntu-test::hook'
   end
 
   it 'installs the ssh key' do
     expect(chef_run)
-      .to create_file('/var/lib/buildkite-agent/.ssh/id_rsa')
+      .to create_file('/etc/buildkite-agent/hooks/environment')
       .with(
-        content: '-----BEGIN RSA PRIVATE KEY-----',
+        content: "export FOO=bar\n",
         user: 'buildkite-agent',
         group: 'buildkite-agent',
-        mode: '0400'
+        mode: '0700'
       )
   end
 end

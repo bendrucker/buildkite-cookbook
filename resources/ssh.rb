@@ -3,18 +3,14 @@ resource_name :buildkite_key
 actions :create, :delete
 default_action :create
 
-property :path, String, default: ::File.join(node['buildkite']['ssh_path'], 'id_rsa')
+property :name, String, default: 'id_rsa', name_property: true
 property :owner, String, default: node['buildkite']['user']
 property :content, String, regex: /BEGIN RSA PRIVATE KEY/, required: true
 
-action :create do
-  directory ::File.dirname(new_resource.path) do
-    recursive true
-    owner new_resource.owner
-    group new_resource.owner
-  end
+path = node['buildkite']['paths']['ssh']
 
-  file new_resource.path do
+action :create do
+  file ::File.join(path, new_resource.name) do
     content new_resource.content
     mode '0400'
     owner new_resource.owner
@@ -23,11 +19,7 @@ action :create do
 end
 
 action :delete do
-  directory ::File.dirname(new_resource.path) do
-    action :delete
-  end
-
-  file new_resource.path do
+  file ::File.join(path, new_resource.name) do
     action :delete
   end
 end
