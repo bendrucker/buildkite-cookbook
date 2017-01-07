@@ -51,7 +51,7 @@ describe 'buildkite::ubuntu' do
       .to render_file('/etc/buildkite-agent/buildkite-agent.cfg')
       .with_content <<-EOH.strip
 name="%hostname-%n"
-build-path="/var/lib/buildkite-agent/builds/"
+build-path="/var/lib/buildkite-agent/builds"
 bootstrap-script="/usr/share/buildkite-agent/bootstrap.sh"
 meta-data="os=ubuntu,foo=true"
 token="toto"

@@ -2,6 +2,7 @@ require_relative './spec_helper'
 require_relative './support/winsw_matchers'
 
 describe 'buildkite::windows' do
+  exe = 'C:\cache\buildkite\buildkite-agent.exe'
   let(:chef_run) do
     ChefSpec::SoloRunner
       .new(
@@ -22,20 +23,23 @@ describe 'buildkite::windows' do
 
   context 'update' do
     before do
-      stub_command('C:\cache\buildkite\buildkite-agent.exe --version | find /i "3.0-beta.16"')
+      stub_command(exe + ' --version | find /i "3.0-beta.16"')
         .and_return false
 
       chef_run.converge described_recipe
     end
 
     it 'converts the bootstrap script path from windows => linux' do
-      expect(chef_run.node['buildkite']['conf']['bootstrap-script']).to eq('C:/cache/buildkite/buildkite-agent.exe bootstrap')
+      expect(chef_run.node['buildkite']['conf']['bootstrap-script'])
+        .to eq('C:/cache/buildkite/buildkite-agent.exe bootstrap')
     end
 
     it 'installs buildkite from github releases' do
       expect(chef_run)
         .to unzip_windows_zipfile_to('C:\cache\buildkite')
-        .with(source: 'https://github.com/buildkite/agent/releases/download/v3.0-beta.16/buildkite-agent-windows-386-3.0-beta.16.zip')
+        .with(
+          source: 'https://github.com/buildkite/agent/releases/download/v3.0-beta.16/buildkite-agent-windows-386-3.0-beta.16.zip'
+        )
     end
 
     it 'stops the service before' do
@@ -55,7 +59,7 @@ describe 'buildkite::windows' do
 
   context 'no update' do
     before do
-      stub_command('C:\cache\buildkite\buildkite-agent.exe --version | find /i "3.0-beta.16"')
+      stub_command(exe + ' --version | find /i "3.0-beta.16"')
         .and_return true
 
       chef_run.converge described_recipe

@@ -1,7 +1,9 @@
 Chef::Resource::File.send(:include, Buildkite::Conf)
 
 file '/etc/apt/sources.list.d/buildkite-agent.list' do
-  content "deb #{node['buildkite']['apt']['repo']} #{node['buildkite']['apt']['releases'].join(' ')}"
+  repo = node['buildkite']['apt']['repo']
+  releases = node['buildkite']['apt']['releases'].join(' ')
+  content "deb #{repo} #{releases}"
 end
 
 apt_repository 'buildkite' do
@@ -19,9 +21,13 @@ apt_package 'buildkite-agent' do
 end
 
 file node['buildkite']['paths']['conf'] do
-  token_path = node['buildkite']['token']
+  keys = node['buildkite']['token']
+  token = Chef::EncryptedDataBagItem.load(keys[0], keys[1])[keys[2]]
 
-  content render_conf(node['buildkite']['conf'], 'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]])
+  content render_conf(
+    node['buildkite']['conf'],
+    'token' => token
+  )
 
   notifies :restart, 'service[buildkite-agent]'
 end

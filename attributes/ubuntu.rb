@@ -7,7 +7,19 @@ if platform?('ubuntu')
     'hooks' => '/etc/buildkite-agent/hooks'
   }
 
-  default['buildkite']['conf']['build-path'] = '/var/lib/buildkite-agent/builds/'
-  default['buildkite']['conf']['bootstrap-script'] = '/usr/share/buildkite-agent/bootstrap.sh'
+  default['buildkite']['conf']['build-path'] = %w(
+    /var
+    lib
+    buildkite-agent
+    builds
+  ).join('/')
+
+  default['buildkite']['conf']['bootstrap-script'] = %w(
+    /usr
+    share
+    buildkite-agent
+    bootstrap.sh
+  ).join('/')
+
   default['buildkite']['conf']['meta-data']['os'] = 'ubuntu'
 end

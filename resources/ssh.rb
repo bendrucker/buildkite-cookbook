@@ -3,7 +3,7 @@ resource_name :buildkite_key
 actions :create, :delete
 default_action :create
 
-property :name, String, default: 'id_rsa', name_property: true
+property :name, String, name_property: true
 property :owner, String, default: node['buildkite']['user']
 property :content, String, regex: /BEGIN RSA PRIVATE KEY/, required: true
 

@@ -2,8 +2,15 @@ Chef::Resource::File.send(:include, Buildkite::Conf)
 
 version = node['buildkite']['version']
 architecture = node['buildkite']['architecture'] == '32' ? '386' : 'amd64'
-filename = "buildkite-agent-windows-#{architecture}-#{version}.zip"
-url = "https://github.com/buildkite/agent/releases/download/v#{version}/#{filename}"
+
+filename = node['buildkite']['release']['filename']
+  .gsub(':architecture:', architecture)
+  .gsub(':version:', version)
+
+url = node['buildkite']['release']['url']
+  .gsub(':version:', version)
+  .gsub(':filename:', filename)
+
 directory = Chef::Config[:file_cache_path] + '\\buildkite'
 agent = directory + '\\buildkite-agent.exe'
 
@@ -12,11 +19,15 @@ Chef::Resource::File.send(:include, Buildkite::Conf)
 conf_path = node['buildkite']['paths']['conf']
 
 file conf_path do
-  token_path = node['buildkite']['token']
+  keys = node['buildkite']['token']
+  token = Chef::EncryptedDataBagItem.load(keys[0], keys[1])[keys[2]]
 
-  content render_conf(node['buildkite']['conf'], 'token' => Chef::EncryptedDataBagItem.load(token_path[0], token_path[1])[token_path[2]])
+  content render_conf(
+    node['buildkite']['conf'],
+    'token' => token
+  )
 
-  notifies :restart, 'winsw[buildkite-agent]' if platform?('windows')
+  notifies :restart, 'winsw[buildkite-agent]'
 end
 
 winsw 'buildkite-agent' do

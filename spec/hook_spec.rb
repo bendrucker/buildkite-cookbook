@@ -16,7 +16,7 @@ describe 'buildkite::hook' do
     expect(chef_run)
       .to create_file('/etc/buildkite-agent/hooks/environment')
       .with(
-        content: "export FOO=bar\n",
+        content: 'export FOO=bar',
         user: 'buildkite-agent',
         group: 'buildkite-agent',
         mode: '0700'
