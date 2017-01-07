@@ -1,24 +1,54 @@
 module Buildkite
+  # Provides configuration helpers for rendering configuration
   module Conf
     def render_conf(defaults, overrides = {})
-      Chef::Log.debug('defaults: ' + Chef::JSONCompat.to_json_pretty(defaults))
-      Chef::Log.debug('overrides: ' + Chef::JSONCompat.to_json_pretty(overrides))
-
-      wrapper = ''
       defaults.to_hash.merge(overrides).reduce('') do |acc, (key, value)|
-        wrapper = ''
-        if [true, false].include?(value)
-          value = value ? 'true' : 'false'
-        else
-          wrapper = '"'
-        end
-
-        if key == 'meta-data' && value.is_a?(Hash)
-          value = value.map { |meta_key, meta_value| [meta_key, meta_value].join('=') }.join(',')
-        end
-
-        acc + key + '=' + wrapper + value + wrapper + ($INPUT_RECORD_SEPARATOR || "\n")
+        value = render_meta_data(value) if key == 'meta-data'
+        acc + render_line(key, value) + separator
       end
+    end
+
+    private_class_method
+    def boolean?(value)
+      [true, false].include?(value)
+    end
+
+    private_class_method
+    def render_value(value)
+      if boolean?(value)
+        value ? 'true' : 'false'
+      else
+        value
+      end
+    end
+
+    private_class_method
+    def render_wrapper(value)
+      boolean?(value) ? '' : '"'
+    end
+
+    private_class_method
+    def render_meta_data(value)
+      if !value.is_a?(Hash)
+        value
+      else
+        value
+          .map do |meta_key, meta_value|
+            [meta_key, meta_value].join('=')
+          end
+          .join(',')
+      end
+    end
+
+    private_class_method
+    def render_line(key, value)
+      wrapper = render_wrapper value
+      key + '=' + wrapper + render_value(value) + wrapper
+    end
+
+    private_class_method
+    def separator
+      $INPUT_RECORD_SEPARATOR || "\n"
     end
   end
 end
