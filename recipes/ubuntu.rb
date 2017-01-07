@@ -9,6 +9,7 @@ apt_repository 'buildkite' do
   distribution node['lsb']['codename']
   components node['buildkite']['apt']['releases']
   key node['buildkite']['apt']['key']
+  distribution nil
 end
 
 include_recipe 'apt'

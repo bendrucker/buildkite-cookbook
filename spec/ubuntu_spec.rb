@@ -30,7 +30,7 @@ describe 'buildkite::ubuntu' do
       .to add_apt_repository('buildkite')
       .with(
         uri: 'https://apt.buildkite.com/buildkite-agent',
-        distribution: 'xenial',
+        distribution: nil,
         components: %w(stable main),
         key: '32A37959C2FA5C3C99EFBC32A79206696452D198'
       )
