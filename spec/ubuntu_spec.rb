@@ -69,4 +69,24 @@ token="toto"
     expect(chef_run).to enable_service('buildkite-agent')
     expect(chef_run).to start_service('buildkite-agent')
   end
+
+  it 'creates the ssh directory' do
+    expect(chef_run)
+      .to create_directory('/var/lib/buildkite-agent/.ssh')
+      .with(
+        recursive: true,
+        owner: 'buildkite-agent',
+        group: 'buildkite-agent'
+      )
+  end
+
+  it 'creates the hooks directory' do
+    expect(chef_run)
+      .to create_directory('/etc/buildkite-agent/hooks')
+      .with(
+        recursive: true,
+        owner: 'buildkite-agent',
+        group: 'buildkite-agent'
+      )
+  end
 end
