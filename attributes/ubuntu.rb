@@ -1,7 +1,7 @@
 if platform?('ubuntu')
   default['buildkite']['version'] = '2.3.2-1408'
   default['buildkite']['user'] = 'buildkite-agent'
-  default['buildkite']['paths'] = {
+  paths = default['buildkite']['paths'] = {
     'ssh' => '/var/lib/buildkite-agent/.ssh',
     'conf' => '/etc/buildkite-agent/buildkite-agent.cfg',
     'hooks' => '/etc/buildkite-agent/hooks'
@@ -20,6 +20,8 @@ if platform?('ubuntu')
     buildkite-agent
     bootstrap.sh
   ).join('/')
+
+  default['buildkite']['conf']['hooks-path'] = paths['hooks']
 
   default['buildkite']['conf']['meta-data']['os'] = 'ubuntu'
 end

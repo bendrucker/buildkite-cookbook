@@ -53,6 +53,7 @@ describe 'buildkite::ubuntu' do
 name="%hostname-%n"
 build-path="/var/lib/buildkite-agent/builds"
 bootstrap-script="/usr/share/buildkite-agent/bootstrap.sh"
+hooks-path="/etc/buildkite-agent/hooks"
 meta-data="os=ubuntu,foo=true"
 token="toto"
       EOH
