@@ -5,7 +5,7 @@ rvm:
 addons:
   apt:
     sources:
-      - chef-stable-precise
+      - chef-current-precise
     packages:
       - chefdk
 cache:
