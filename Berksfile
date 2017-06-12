@@ -1,6 +1,6 @@
 source 'https://supermarket.chef.io'
 
-cookbook 'winsw', git: 'https://github.com/github1/winsw-cookbook.git', tag: '74effe'
+cookbook 'winsw', git: 'https://github.com/github1/winsw-cookbook.git', tag: '74effe6'
 
 metadata
 
