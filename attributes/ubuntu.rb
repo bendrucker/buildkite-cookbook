@@ -7,19 +7,19 @@ if platform?('ubuntu')
     'hooks' => '/etc/buildkite-agent/hooks'
   }
 
-  default['buildkite']['conf']['build-path'] = %w[
+  default['buildkite']['conf']['build-path'] = %w(
     /var
     lib
     buildkite-agent
     builds
-  ].join('/')
+  ).join('/')
 
-  default['buildkite']['conf']['bootstrap-script'] = %w[
+  default['buildkite']['conf']['bootstrap-script'] = %w(
     /usr
     share
     buildkite-agent
     bootstrap.sh
-  ].join('/')
+  ).join('/')
 
   default['buildkite']['conf']['hooks-path'] = paths['hooks']
 

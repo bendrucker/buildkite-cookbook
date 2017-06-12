@@ -10,14 +10,14 @@ if platform?('windows')
   default['buildkite']['conf']['bootstrap-script'] = bootstrap
 
   default['buildkite']['release'] = {
-    'filename' => %w[
+    'filename' => %w(
       buildkite
       agent
       windows
       :architecture:
       :version:.zip
-    ].join('-'),
-    'url' => %w[
+    ).join('-'),
+    'url' => %w(
       https://github.com
       buildkite
       agent
@@ -25,6 +25,6 @@ if platform?('windows')
       download
       v:version:
       :filename:
-    ].join('/')
+    ).join('/')
   }
 end

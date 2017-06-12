@@ -47,7 +47,6 @@ describe 'buildkite::ubuntu' do
   end
 
   it 'creates the conf' do
-    # rubocop:disable Layout/IndentHeredoc
     expect(chef_run)
       .to render_file('/etc/buildkite-agent/buildkite-agent.cfg')
       .with_content <<-EOH.strip
