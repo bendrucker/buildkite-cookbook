@@ -33,10 +33,10 @@ file node['buildkite']['paths']['conf'] do
 end
 
 service 'buildkite-agent' do
-  action [:enable, :start]
+  action %i[enable start]
 end
 
-%w(ssh hooks).each do |key|
+%w[ssh hooks].each do |key|
   directory node['buildkite']['paths'][key] do
     recursive true
     owner node['buildkite']['user']
