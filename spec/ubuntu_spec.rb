@@ -31,7 +31,7 @@ describe 'buildkite::ubuntu' do
       .with(
         uri: 'https://apt.buildkite.com/buildkite-agent',
         distribution: nil,
-        components: %w[stable main],
+        components: %w(stable main),
         key: '32A37959C2FA5C3C99EFBC32A79206696452D198'
       )
   end
