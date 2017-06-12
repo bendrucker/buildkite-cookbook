@@ -1,5 +1,5 @@
 name 'buildkite'
-version '1.0.1'
+version '1.0.2'
 
 description 'Installs and configures the buildkite agent'
 
@@ -15,6 +15,6 @@ supports 'ubuntu'
 supports 'windows'
 
 depends 'apt', '~> 5.0.0'
-depends 'git', '~> 5.0.1'
+depends 'git', '~> 6.1.0'
 depends 'windows', '~> 2.1.1'
 depends 'winsw', '~> 0.3'
