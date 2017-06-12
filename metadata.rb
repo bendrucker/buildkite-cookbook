@@ -14,6 +14,8 @@ source_url 'https://github.com/bendrucker/buildkite-cookbook'
 supports 'ubuntu'
 supports 'windows'
 
+chef_version '>= 12'
+
 depends 'apt', '~> 5.0.0'
 depends 'git', '~> 6.1.0'
 depends 'windows', '~> 2.1.1'
