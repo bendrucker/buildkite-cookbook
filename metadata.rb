@@ -1,5 +1,5 @@
 name 'buildkite'
-version '1.0.3'
+version '1.0.4'
 
 description 'Installs and configures the buildkite agent'
 
