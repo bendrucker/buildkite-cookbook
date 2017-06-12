@@ -4,7 +4,7 @@ actions :create, :delete
 default_action :create
 
 property :name, String, name_property: true
-property :owner, String, default: node['buildkite']['user']
+property :owner, [String, NilClass], default: node['buildkite']['user']
 property :content, String, regex: /BEGIN RSA PRIVATE KEY/, required: true
 
 path = node['buildkite']['paths']['ssh']
