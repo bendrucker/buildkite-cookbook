@@ -1,10 +1,9 @@
 if platform?('windows')
-  exe = ::File.join(
+  bootstrap = ::File.join(
     Chef::Config[:file_cache_path],
     'buildkite',
-    'buildkite-agent.exe'
+    'bootstrap.bat'
   )
-  bootstrap = exe.tr('\\', '/') + ' bootstrap'
 
   default['buildkite']['version'] = '2.3.2'
   default['buildkite']['conf']['bootstrap-script'] = bootstrap
